@@ -1,0 +1,120 @@
+[gd_scene load_steps=15 format=3 uid="uid://bs4ywqwnwmva6"]
+
+[ext_resource type="Script" path="res://CharaInputControl.cs" id="1_7rcso"]
+[ext_resource type="PackedScene" uid="uid://duhsremgnnm21" path="res://character.tscn" id="1_n6x6c"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_to00m"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_uwxvd"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_45wuc"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="4_yktef"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_dtp2v"]
+size = Vector2(10, 10)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rj7yh"]
+viewport_path = NodePath("GroundFloor/Sprite3D/SubViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_6sv7j"]
+font_size = 50
+
+[sub_resource type="Resource" id="Resource_l4nak"]
+script = ExtResource("4_45wuc")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="Resource" id="Resource_ks4ad"]
+script = ExtResource("4_yktef")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+projection = 0
+fov = 75.0
+size = 1.0
+frustum_offset = Vector2(0, 0)
+near = 0.05
+far = 4000.0
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gejid"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_dqvy8"]
+sky_material = SubResource("ProceduralSkyMaterial_gejid")
+
+[sub_resource type="Environment" id="Environment_scv68"]
+background_mode = 2
+sky = SubResource("Sky_dqvy8")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Scene" type="Node"]
+
+[node name="GroundFloor" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GroundFloor"]
+mesh = SubResource("PlaneMesh_dtp2v")
+
+[node name="Sprite3D" type="Sprite3D" parent="GroundFloor"]
+billboard = 1
+no_depth_test = true
+texture = SubResource("ViewportTexture_rj7yh")
+
+[node name="SubViewport" type="SubViewport" parent="GroundFloor/Sprite3D"]
+transparent_bg = true
+size = Vector2i(1024, 512)
+
+[node name="Label" type="Label" parent="GroundFloor/Sprite3D/SubViewport"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.0
+offset_top = -70.5
+offset_right = 76.0
+offset_bottom = 70.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "PC：上下左右控制移动，逗号句号控制转向
+手柄：左摇杆控制移动，右摇杆控制转向
+
+"
+label_settings = SubResource("LabelSettings_6sv7j")
+
+[node name="CharaInputControl" type="Node" parent="."]
+script = ExtResource("1_7rcso")
+
+[node name="Character" parent="CharaInputControl" instance=ExtResource("1_n6x6c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CameraGroup" type="Node" parent="CharaInputControl"]
+
+[node name="Camera3DControledByPhantom" type="Camera3D" parent="CharaInputControl/CameraGroup"]
+transform = Transform3D(-0.978359, 0, 0, 0, 0.707077, 0.695021, 0, 0.707077, -0.695021, 0, 6, -4)
+
+[node name="PhantomCameraHost" type="Node" parent="CharaInputControl/CameraGroup/Camera3DControledByPhantom"]
+script = ExtResource("2_uwxvd")
+
+[node name="FollowLookAtPhantom" type="Node3D" parent="CharaInputControl/CameraGroup" node_paths=PackedStringArray("follow_target", "look_at_target")]
+transform = Transform3D(-0.978359, 0, 0, 0, 0.707077, 0.695021, 0, 0.707077, -0.695021, 0, 6, -4)
+script = ExtResource("2_to00m")
+follow_mode = 2
+follow_target = NodePath("../../Character")
+look_at_mode = 2
+look_at_target = NodePath("../../Character")
+tween_resource = SubResource("Resource_l4nak")
+camera_3d_resource = SubResource("Resource_ks4ad")
+follow_offset = Vector3(0, 5, -4)
+look_at_offset = Vector3(0, 1, 0)
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(1, 1, 0.666667, 1)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_scv68")
+
+[node name="UI" type="Node" parent="."]
