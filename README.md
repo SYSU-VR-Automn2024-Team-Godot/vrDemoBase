@@ -1,5 +1,16 @@
+## 统一环境
+
+使用的 Godot 版本为 [Download Godot 4.3 (stable) – Godot Engine](https://godotengine.org/download/archive/4.3-stable/) ，且统一使用 .NET 版本进行 C# 开发。
+此版本对应代码仓为 [Release 4.3-stable · godotengine/godot (github.com)](https://github.com/godotengine/godot/releases/tag/4.3-stable) 。
+
+## 实现功能
+[x] 角色平移（相对于镜头方向）
+[x] 镜头跟随、转动
+[ ] 地面物理效果及重力效果
 
 ## 现有问题
+
+### 1. 角色平移时的抖动
 角色出现重影
 
 不是这个抖动
