@@ -11,7 +11,7 @@
 size = Vector2(10, 10)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rj7yh"]
-viewport_path = NodePath("GroundFloor/Sprite3D/SubViewport")
+viewport_path = NodePath("GroundFloor/UI3D/SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_6sv7j"]
 font_size = 50
@@ -54,16 +54,16 @@ glow_enabled = true
 [node name="MeshInstance3D" type="MeshInstance3D" parent="GroundFloor"]
 mesh = SubResource("PlaneMesh_dtp2v")
 
-[node name="Sprite3D" type="Sprite3D" parent="GroundFloor"]
+[node name="UI3D" type="Sprite3D" parent="GroundFloor"]
 billboard = 1
 no_depth_test = true
 texture = SubResource("ViewportTexture_rj7yh")
 
-[node name="SubViewport" type="SubViewport" parent="GroundFloor/Sprite3D"]
+[node name="SubViewport" type="SubViewport" parent="GroundFloor/UI3D"]
 transparent_bg = true
 size = Vector2i(1024, 512)
 
-[node name="Label" type="Label" parent="GroundFloor/Sprite3D/SubViewport"]
+[node name="Label" type="Label" parent="GroundFloor/UI3D/SubViewport"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -90,13 +90,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 [node name="CameraGroup" type="Node" parent="CharaInputControl"]
 
 [node name="Camera3DControledByPhantom" type="Camera3D" parent="CharaInputControl/CameraGroup"]
-transform = Transform3D(-0.978359, 0, 0, 0, 0.707077, 0.695021, 0, 0.707077, -0.695021, 0, 6, -4)
+transform = Transform3D(-0.97703, 0, 0, 0, 0.707077, 0.694291, 0, 0.707077, -0.694291, 0, 6, -4)
 
 [node name="PhantomCameraHost" type="Node" parent="CharaInputControl/CameraGroup/Camera3DControledByPhantom"]
 script = ExtResource("2_uwxvd")
 
 [node name="FollowLookAtPhantom" type="Node3D" parent="CharaInputControl/CameraGroup" node_paths=PackedStringArray("follow_target", "look_at_target")]
-transform = Transform3D(-0.978359, 0, 0, 0, 0.707077, 0.695021, 0, 0.707077, -0.695021, 0, 6, -4)
+transform = Transform3D(-0.97703, 0, 0, 0, 0.707077, 0.694291, 0, 0.707077, -0.694291, 0, 6, -4)
 script = ExtResource("2_to00m")
 follow_mode = 2
 follow_target = NodePath("../../Character")
@@ -116,5 +116,3 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
 environment = SubResource("Environment_scv68")
-
-[node name="UI" type="Node" parent="."]
